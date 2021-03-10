@@ -11,7 +11,7 @@ import {
   TableHead,
   Button,
   Popover,
-  TextField
+  TextField,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -55,7 +55,7 @@ function Inbox(props) {
       backgroundColor: '#cc0000',
       color: '#fff',
     },
-    dspAdd:{
+    dspAdd: {
       display: 'flex',
       justifyContent: 'flex-end',
       paddingRight: '13px',
@@ -66,12 +66,12 @@ function Inbox(props) {
     padding20: {
       padding: '20px',
     },
-    marpad:{
+    marpad: {
       marginTop: 'auto',
       padding: '20px',
-      width: '14%'
+      width: '14%',
     },
-    dspSave:{
+    dspSave: {
       display: 'flex',
       justifyContent: 'flex-end',
       paddingTop: '13px',
@@ -85,6 +85,11 @@ function Inbox(props) {
     { key: 'Status' },
     { key: '' },
   ];
+  const [state, setState] = useState({
+    id: '',
+    title: '',
+    completed: '',
+  });
   const [tableData, setTableData] = useState([]);
   const [showPopover, setShowPopover] = React.useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -108,12 +113,19 @@ function Inbox(props) {
     setShowPopover(true);
     setAnchorEl(event.currentTarget);
   };
-  const handleSave = (e) =>{
-  
+  const handleSave = (e) => {
+    let obj = { id: state.id, title: state.title, completed: state.completed };
+    let arr = [obj, ...tableData];
+    setTableData(arr);
+    setAnchorEl(null);
   };
   function handleClose() {
     setAnchorEl(null);
- };
+  }
+  const handleChange = (e, type) => {
+    setState({ ...state, [type]: e.target.value });
+  };
+
   const InboxTable = () => {
     return (
       <TableContainer component={Paper} className={classes.tableHeight}>
@@ -177,108 +189,113 @@ function Inbox(props) {
   };
   return (
     <div>
-    <Popover
-    id={id}
-    open={open}
-    anchorEl={anchorEl}
-    onClose={handleClose}
-    anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-    }}
-    transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-    }}
->
-  <Grid item xl={12} lg={12} md={12} sm={12} xs={12} className={classes.padding20}>
-  <Grid className={classes.disFlx}>
-                          <Typography className={classes.marpad}>
-                            Id
-                          </Typography>
-                          <TextField
-                            id="customAlertTitle"
-                            className="inputCustom"
-                            margin="normal"
-                            variant="outlined"
-                            aria-label="minimum height"
-                          />
-                        </Grid>
-                        <Grid className={classes.disFlx}>
-                          <Typography className={classes.marpad}>
-                            Title
-                          </Typography>
-                          <TextField
-                            id="customAlertTitle"
-                            className="inputCustom"
-                            margin="normal"
-                            variant="outlined"
-                            aria-label="minimum height"
-                          />
-                        </Grid>
-                        <Grid className={classes.disFlx}>
-                          <Typography className={classes.marpad}>
-                            Status
-                          </Typography>
-                          <TextField
-                            id="customAlertTitle"
-                            className="inputCustom"
-                            margin="normal"
-                            variant="outlined"
-                            aria-label="minimum height"
-                          />
-                        </Grid>
-                        <Grid className={classes.dspSave}>
-                        <Button
-                          variant="contained"
-                          color=""
-                          className={classes.themeColorBg}
-                          onClick={(e) => handleSave(e)}
-                        >
-                          Save
-                        </Button>
-                        </Grid>
-  </Grid>
-</Popover>
-    <Grid item className={classes.container}>
-      <Card className={classes.CardContainer}>
-        <Grid item container lg={12} md={12} sm={12}>
-          <Grid item lg={12} md={12} sm={12} className={classes.title}>
-            <Typography className={classes.typo} variant="h5">
-              Tasks Information
-            </Typography>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'center',
+        }}
+        transformOrigin={{
+          vertical: 'top',
+          horizontal: 'center',
+        }}
+      >
+        <Grid
+          item
+          xl={12}
+          lg={12}
+          md={12}
+          sm={12}
+          xs={12}
+          className={classes.padding20}
+        >
+          <Grid className={classes.disFlx}>
+            <Typography className={classes.marpad}>Id</Typography>
+            <TextField
+              id="customAlertTitle"
+              className="inputCustom"
+              margin="normal"
+              variant="outlined"
+              aria-label="minimum height"
+              onChange={(e) => handleChange(e, 'id')}
+            />
           </Grid>
-          <Grid
-            item
-            lg={12}
-            className="full-width fullHeight dash-card-content"
-          >
-            <Grid item container lg={12} className={classes.dspAdd}>
+          <Grid className={classes.disFlx}>
+            <Typography className={classes.marpad}>Title</Typography>
+            <TextField
+              id="customAlertTitle"
+              className="inputCustom"
+              margin="normal"
+              variant="outlined"
+              aria-label="minimum height"
+              onChange={(e) => handleChange(e, 'title')}
+            />
+          </Grid>
+          <Grid className={classes.disFlx}>
+            <Typography className={classes.marpad}>Status</Typography>
+            <TextField
+              id="customAlertTitle"
+              className="inputCustom"
+              margin="normal"
+              variant="outlined"
+              aria-label="minimum height"
+              onChange={(e) => handleChange(e, 'completed')}
+            />
+          </Grid>
+          <Grid className={classes.dspSave}>
             <Button
-                          variant="contained"
-                          color=""
-                          className={classes.themeColorBg}
-                          onClick={(e) => handleTask(e)}
-                        >
-                          Add Task
-                        </Button>
+              variant="contained"
+              color=""
+              className={classes.themeColorBg}
+              onClick={(e) => handleSave(e)}
+            >
+              Save
+            </Button>
+          </Grid>
+        </Grid>
+      </Popover>
+      <Grid item className={classes.container}>
+        <Card className={classes.CardContainer}>
+          <Grid item container lg={12} md={12} sm={12}>
+            <Grid item lg={12} md={12} sm={12} className={classes.title}>
+              <Typography className={classes.typo} variant="h5">
+                Tasks Information
+              </Typography>
             </Grid>
-            <Grid item container lg={12} className={classes.pieCharts}>
-              <Grid
-                item
-                lg={12}
-                md={12}
-                className={`background-white ${classes.mainHeight} overflow-auto `}
-              >
-                <Grid item container lg={12}>
-                  <InboxTable />
+            <Grid
+              item
+              lg={12}
+              className="full-width fullHeight dash-card-content"
+            >
+              <Grid item container lg={12} className={classes.dspAdd}>
+                <Button
+                  variant="contained"
+                  color=""
+                  className={classes.themeColorBg}
+                  onClick={(e) => handleTask(e)}
+                >
+                  Add Task
+                </Button>
+              </Grid>
+              <Grid item container lg={12} className={classes.pieCharts}>
+                <Grid
+                  item
+                  lg={12}
+                  md={12}
+                  className={`background-white ${classes.mainHeight} overflow-auto `}
+                >
+                  <Grid item container lg={12}>
+                    <InboxTable />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-        </Grid>
-      </Card>
-    </Grid>
+        </Card>
+      </Grid>
     </div>
   );
 }
