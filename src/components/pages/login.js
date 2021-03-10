@@ -132,7 +132,6 @@ function Login(props) {
                     <TextField
                       id="outlined-email-input"
                       label="Username"
-                      //value={}
                       className={classes.textField}
                       name="username"
                       autoComplete="email"
