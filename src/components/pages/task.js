@@ -10,6 +10,8 @@ import {
   Paper,
   TableHead,
   Button,
+  Popover,
+  TextField
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -53,6 +55,27 @@ function Inbox(props) {
       backgroundColor: '#cc0000',
       color: '#fff',
     },
+    dspAdd:{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      paddingRight: '13px',
+    },
+    disFlx: {
+      display: 'flex',
+    },
+    padding20: {
+      padding: '20px',
+    },
+    marpad:{
+      marginTop: 'auto',
+      padding: '20px',
+      width: '14%'
+    },
+    dspSave:{
+      display: 'flex',
+      justifyContent: 'flex-end',
+      paddingTop: '13px',
+    },
   }));
   const classes = useStyles();
 
@@ -63,6 +86,10 @@ function Inbox(props) {
     { key: '' },
   ];
   const [tableData, setTableData] = useState([]);
+  const [showPopover, setShowPopover] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
   const gitHubUrl = 'http://jsonplaceholder.typicode.com/todos';
   const getGiHubUserWithAxios = async () => {
     const response = await axios.get(gitHubUrl);
@@ -77,7 +104,16 @@ function Inbox(props) {
     arr = arr.filter((item) => item !== val);
     setTableData(arr);
   };
-
+  const handleTask = (event) => {
+    setShowPopover(true);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleSave = (e) =>{
+  
+  };
+  function handleClose() {
+    setAnchorEl(null);
+ };
   const InboxTable = () => {
     return (
       <TableContainer component={Paper} className={classes.tableHeight}>
@@ -140,6 +176,70 @@ function Inbox(props) {
     );
   };
   return (
+    <div>
+    <Popover
+    id={id}
+    open={open}
+    anchorEl={anchorEl}
+    onClose={handleClose}
+    anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+    }}
+    transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+    }}
+>
+  <Grid item xl={12} lg={12} md={12} sm={12} xs={12} className={classes.padding20}>
+  <Grid className={classes.disFlx}>
+                          <Typography className={classes.marpad}>
+                            Id
+                          </Typography>
+                          <TextField
+                            id="customAlertTitle"
+                            className="inputCustom"
+                            margin="normal"
+                            variant="outlined"
+                            aria-label="minimum height"
+                          />
+                        </Grid>
+                        <Grid className={classes.disFlx}>
+                          <Typography className={classes.marpad}>
+                            Title
+                          </Typography>
+                          <TextField
+                            id="customAlertTitle"
+                            className="inputCustom"
+                            margin="normal"
+                            variant="outlined"
+                            aria-label="minimum height"
+                          />
+                        </Grid>
+                        <Grid className={classes.disFlx}>
+                          <Typography className={classes.marpad}>
+                            Status
+                          </Typography>
+                          <TextField
+                            id="customAlertTitle"
+                            className="inputCustom"
+                            margin="normal"
+                            variant="outlined"
+                            aria-label="minimum height"
+                          />
+                        </Grid>
+                        <Grid className={classes.dspSave}>
+                        <Button
+                          variant="contained"
+                          color=""
+                          className={classes.themeColorBg}
+                          onClick={(e) => handleSave(e)}
+                        >
+                          Save
+                        </Button>
+                        </Grid>
+  </Grid>
+</Popover>
     <Grid item className={classes.container}>
       <Card className={classes.CardContainer}>
         <Grid item container lg={12} md={12} sm={12}>
@@ -153,6 +253,16 @@ function Inbox(props) {
             lg={12}
             className="full-width fullHeight dash-card-content"
           >
+            <Grid item container lg={12} className={classes.dspAdd}>
+            <Button
+                          variant="contained"
+                          color=""
+                          className={classes.themeColorBg}
+                          onClick={(e) => handleTask(e)}
+                        >
+                          Add Task
+                        </Button>
+            </Grid>
             <Grid item container lg={12} className={classes.pieCharts}>
               <Grid
                 item
@@ -169,6 +279,7 @@ function Inbox(props) {
         </Grid>
       </Card>
     </Grid>
+    </div>
   );
 }
 export default Inbox;
