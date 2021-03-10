@@ -1,0 +1,12 @@
+.full-width {
+    max-width: 100% !important;
+  }
+  .fullHeight {
+    height: 100%;
+  }
+  .background-white {
+    background: #fff !important;
+  }
+  .overflow-auto {
+    overflow: auto !important;
+  }
